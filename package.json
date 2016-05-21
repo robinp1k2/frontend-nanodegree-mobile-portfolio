@@ -5,29 +5,28 @@
   "main": "gulpfile.js",
   "dependencies": {},
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-clean-css": "^2.0.7",
-    "gulp-htmlmin": "^2.0.0",
-    "gulp-image-resize": "^0.8.0",
-    "gulp-imagemin": "^3.0.1",
-    "gulp-plumber": "^1.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.5.3"
+  "gulp": "^3.9.1",
+  "gulp-clean-css": "^2.0.7",
+  "gulp-htmlmin": "^2.0.0",
+  "gulp-image-resize": "^0.8.0",
+  "gulp-imagemin": "^3.0.1",
+  "gulp-plumber": "^1.1.0",
+  "gulp-rename": "^1.2.2",
+  "gulp-uglify": "^1.5.3"
   },
   "scripts": {
-    "test": "test"
-  },
+  "test": "test"  },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/robinp1k2/frontend-nanodegree-mobile-portfolio.git"
+  "type": "git",
+  "url": "git+https://github.com/robinp1k2/frontend-nanodegree-mobile-portfolio.git"
   },
   "keywords": [
-    "fend"
+  "fend"
   ],
   "author": "robinp",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/robinp1k2/frontend-nanodegree-mobile-portfolio/issues"
+  "url": "https://github.com/robinp1k2/frontend-nanodegree-mobile-portfolio/issues"
   },
   "homepage": "https://github.com/robinp1k2/frontend-nanodegree-mobile-portfolio#readme"
 }
