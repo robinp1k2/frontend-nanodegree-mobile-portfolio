@@ -103,7 +103,7 @@ gulp.task('default', [
     'compress_vscripts',
     'compress_vstyles',
     'compress_vmarkup',
-    'compress_vimages',
-    'watch'
+    'compress_vimages'//,
+//    'watch'
 ] 
 );
