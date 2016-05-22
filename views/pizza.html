@@ -10,7 +10,14 @@
     <!-- trying trick to load css after page is loaded... it works!!-->
     <link href="css/style.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'"> 
     <link href="css/bootstrap-grid.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'">
-    
+    <style>
+    .img-responsive {
+        display: block;
+        width: 100% \9;
+        max-width: 100%;
+        height: auto;
+    }
+    </style>
     <script async src="js/main.js"></script>
 </head>
 
@@ -45,7 +52,8 @@
     </div>
     <div id="callToAction" class="row">
       <div class="col-md-4">
-        <img src="images/pizzeria_360.jpg" class="img-responsive"> <!-- Image credit to: http://commons.wikimedia.org/wiki/File:HK_TST_night_%E5%98%89%E8%98%AD%E9%81%93_Granville_Road_restaurant_Paisano's_Pizzeria_pizza_Dec-2013.JPG -->
+        <img src="images/pizzeria_360.jpg" style="vertical-align: middle; display: block; width: 100% \9; max-width: 100%; height: auto;">
+        <!-- Image credit to: http://commons.wikimedia.org/wiki/File:HK_TST_night_%E5%98%89%E8%98%AD%E9%81%93_Granville_Road_restaurant_Paisano's_Pizzeria_pizza_Dec-2013.JPG -->
       </div>
       <div class="col-md-8">
         <div class="row">
