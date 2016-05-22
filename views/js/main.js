@@ -226,7 +226,7 @@ function getNoun(y) {
 }
 
 // types of adjectives for pizza titles
-var adjCategory = ["dark", "color", "whimsical", "shiny", "noise", "apocalyptic", "insulting", "praise", "scientific"];
+var adjCategory = ["dark", "color", "whimsical", "shiny", "noisy", "apocalyptic", "insulting", "praise", "scientific"];
 
 // types of nouns for pizza titles
 var nounCategory = ["animals", "everyday", "fantasy", "gross", "horror", "jewelry", "places", "scifi"];
@@ -432,7 +432,7 @@ function updatePositions() {
     var phaseFactor = document.body.scrollTop / 1250;
     for (i = 0; i < items.length; i = i + 1) {
         phase = Math.sin(phaseFactor + (i % 5));
-        items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+        items[i].style.transform = "translateX(" + (items[i].basicLeft + (100 * phase) - 600) + "px) translateZ(0)";
     }
     //perf end
     // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -444,8 +444,10 @@ function updatePositions() {
         logAverageFrame(timesToUpdatePosition);
     }
 }
-// runs updatePositions on scroll
-window.addEventListener('scroll', updatePositions, false);
+// runs updatePositions on scroll - add requestAnimationFrame...
+window.addEventListener('scroll', function() {
+    window.requestAnimationFrame(updatePositions);
+});
 
 var makePizzaShop = function () {
     //Set the number of custom pizzas on the menu.
@@ -478,9 +480,7 @@ var makePizzaShop = function () {
     for (i = 0; i < numMovingPizzas; i = i + 1) {
         elem = document.createElement('img');
         elem.className = 'mover';
-        elem.src = "images/pizza_73.png";
-        elem.style.height = "100px";
-        elem.style.width = "73.333px";
+        elem.src = "images/pizza_73.png"; //new image of the right size
         elem.basicLeft = (i % cols) * s;
         elem.style.top = (Math.floor(i / cols) * s) + 'px';
         document.querySelector("#movingPizzas1").appendChild(elem);
