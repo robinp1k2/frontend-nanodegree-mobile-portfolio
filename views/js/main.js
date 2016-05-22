@@ -480,7 +480,7 @@ var makePizzaShop = function () {
     for (i = 0; i < numMovingPizzas; i = i + 1) {
         elem = document.createElement('img');
         elem.className = 'mover';
-        elem.src = "images/pizza_73.png"; //new image of the right size
+        elem.src = "images/pizza_73.jpg"; //new image of the right size
         elem.basicLeft = (i % cols) * s;
         elem.style.top = (Math.floor(i / cols) * s) + 'px';
         document.querySelector("#movingPizzas1").appendChild(elem);
