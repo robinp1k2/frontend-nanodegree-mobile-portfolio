@@ -447,9 +447,12 @@ function updatePositions() {
     //requestAnimationFrame(updatePositions);
 }
 // runs updatePositions on scroll - add requestAnimationFrame...
-window.addEventListener('scroll', function() {
-    window.requestAnimationFrame(updatePositions);
-});
+//window.addEventListener('scroll', function() {
+//    window.requestAnimationFrame(updatePositions);
+//});
+
+// runs updatePositions on scroll
+window.addEventListener('scroll', updatePositions);
 
 var makePizzaShop = function () {
     //Set the number of custom pizzas on the menu.
