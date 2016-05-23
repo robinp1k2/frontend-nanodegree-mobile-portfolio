@@ -16,8 +16,9 @@ Creator:
 Cameron Pittman, Udacity Course Developer
 cameron *at* udacity *dot* com
 */
-
 // As you may have realized, this website randomly generates pizzas.
+var currentScrollY = 0;
+
 // Here are arrays of all possible pizza ingredients.
 var pizzaIngredients = {};
 pizzaIngredients.meats = [
@@ -420,21 +421,30 @@ function logAverageFrame(times) {
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
+
+
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
     //perf start
     frame = frame + 1;
     window.performance.mark("mark_start_frame");
-
+    /* orig
+    var items = document.querySelectorAll('.mover');
+    for (var i = 0; i < items.length; i++) {
+        var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+        items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    }
+    */
     var items = document.getElementsByClassName('mover');
     var i;
-    var phase;
-    var phaseFactor = document.body.scrollTop / 1250;
     var numItems = items.length;
+    var phase;
+    var phaseFactor = currentScrollY / 1250;
     for (i = 0; i < numItems; i = i + 1) {
         phase = Math.sin(phaseFactor + (i % 5));
-        items[i].style.transform = "translateX(" + (items[i].basicLeft + (100 * phase) - 600) + "px)";
+        items[i].style.transform = "translateX(" + (items[i].basicLeft + (100 * phase) - 600) + "px) translateZ(0)"; 
     }
+ 
     //perf end
     // User Timing API to the rescue again. Seriously, it's worth learning.
     // Super easy to create custom metrics.
@@ -444,9 +454,10 @@ function updatePositions() {
         var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
         logAverageFrame(timesToUpdatePosition);
     }
-    //requestAnimationFrame(updatePositions);
+    //Update scroll location
+    currentScrollY = window.scrollY;
 }
-// runs updatePositions on scroll - add requestAnimationFrame...
+// runs updatePositions on scroll - add requestAnimationFrame...was getting multiple calls to updatePositions...
 //window.addEventListener('scroll', function() {
 //    window.requestAnimationFrame(updatePositions);
 //});
@@ -490,6 +501,7 @@ var makePizzaShop = function () {
         elem.style.top = (Math.floor(i / cols) * s) + 'px';
         document.querySelector("#movingPizzas1").appendChild(elem);
     }
+    currentScrollY = window.scrollY;
     updatePositions();
 };
 
