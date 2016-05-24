@@ -454,16 +454,15 @@ function updatePositions() {
         var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
         logAverageFrame(timesToUpdatePosition);
     }
-    //Update scroll location
-    currentScrollY = window.scrollY;
 }
-// runs updatePositions on scroll - add requestAnimationFrame...was getting multiple calls to updatePositions...
-//window.addEventListener('scroll', function() {
-//    window.requestAnimationFrame(updatePositions);
-//});
-
 // runs updatePositions on scroll
-window.addEventListener('scroll', updatePositions);
+//window.addEventListener('scroll', updatePositions);
+
+// runs updatePositions on scroll - add requestAnimationFrame...was getting multiple calls to updatePositions...
+window.addEventListener('scroll', function() {
+    currentScrollY = window.scrollY;
+    window.requestAnimationFrame(updatePositions);
+});
 
 var makePizzaShop = function () {
     //Set the number of custom pizzas on the menu.
