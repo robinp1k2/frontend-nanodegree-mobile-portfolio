@@ -307,7 +307,7 @@ var makeRandomPizza = function () {
 };
 
 // returns a DOM element for each pizza
-var pizzaElementGenerator = function (i) {
+var pizzaElementGenerator = function (pid) {
     var pizzaContainer;             // contains pizza title, image and list of ingredients
     var pizzaImageContainer;        // contains the pizza image
     var pizzaImage;                 // the pizza image itself
@@ -323,7 +323,7 @@ var pizzaElementGenerator = function (i) {
     pizzaContainer.classList.add("randomPizzaContainer");
     pizzaContainer.style.width = "389px";
     pizzaContainer.style.height = "325px";
-    pizzaContainer.id = "pizza" + i;                // gives each pizza element a unique id
+    pizzaContainer.id = "pizza" + pid;                // gives each pizza element a unique id
     pizzaImageContainer.classList.add("col-md-6");
 
     pizzaImage.src = "images/pizza.png";
@@ -421,8 +421,6 @@ function logAverageFrame(times) {
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
-
-
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
     //perf start
@@ -442,7 +440,7 @@ function updatePositions() {
     var phaseFactor = currentScrollY / 1250;
     for (i = 0; i < numItems; i = i + 1) {
         phase = Math.sin(phaseFactor + (i % 5));
-        items[i].style.transform = "translateX(" + (items[i].basicLeft + (100 * phase) - 600) + "px) translateZ(0)"; 
+        items[i].style.transform = "translate3d(" + (items[i].basicLeft + (100 * phase) - 600) + "px, 0px, 0px)"; 
     }
  
     //perf end
@@ -455,18 +453,10 @@ function updatePositions() {
         logAverageFrame(timesToUpdatePosition);
     }
 }
-// runs updatePositions on scroll
-//window.addEventListener('scroll', updatePositions);
-
-// runs updatePositions on scroll - add requestAnimationFrame...was getting multiple calls to updatePositions...
-window.addEventListener('scroll', function() {
-    currentScrollY = window.scrollY;
-    window.requestAnimationFrame(updatePositions);
-});
 
 var makePizzaShop = function () {
     //Set the number of custom pizzas on the menu.
-    var numCustomPizzas = 24;
+    var numCustomPizzas = 28;
     var iPizza;
     var pizzasDiv = "";
 
@@ -487,21 +477,30 @@ var makePizzaShop = function () {
     console.log("Time to generate pizzas on load: " + timeToGenerate[0].duration + "ms");
 
     // Generates the sliding pizzas when the page loads.
-    var numMovingPizzas = 20;
+    var numMovingPizzas = 26;
     var cols = 8;
     var s = 256;
-    var i;
+    var mID;
     var elem;
-    for (i = 0; i < numMovingPizzas; i = i + 1) {
+    for (mID = 0; mID < numMovingPizzas; mID = mID + 1) {
         elem = document.createElement('img');
         elem.className = 'mover';
         elem.src = "images/pizza_73.jpg"; //new image of the right size
-        elem.basicLeft = (i % cols) * s;
-        elem.style.top = (Math.floor(i / cols) * s) + 'px';
+        elem.basicLeft = (mID % cols) * s;
+        elem.style.top = (Math.floor(mID / cols) * s) + 'px';
         document.querySelector("#movingPizzas1").appendChild(elem);
     }
     currentScrollY = window.scrollY;
     updatePositions();
+    
+    // runs updatePositions on scroll
+    //window.addEventListener('scroll', updatePositions);
+
+    // runs updatePositions on scroll - add requestAnimationFrame...was getting multiple calls to updatePositions...
+    window.addEventListener('scroll', function() {
+        window.requestAnimationFrame(updatePositions);
+        currentScrollY = window.scrollY;
+    });
 };
 
 function onLoad(f) {

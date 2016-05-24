@@ -1,1 +1,1 @@
-*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-box-sizing:border-box}.mover{will-change:transform;transform:translateZ(0);position:fixed;z-index:-1}.randomPizzaContainer{float:left;display:flex}.randomPizzaContainer:after{content:"";display:table;clear:both}
+*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-box-sizing:border-box}.mover{will-change:transform;transform:translate3d(0,0,0);position:fixed;z-index:-1}.randomPizzaContainer{float:left;display:flex}.randomPizzaContainer:after{content:"";display:table;clear:both}
