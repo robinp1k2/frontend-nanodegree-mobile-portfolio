@@ -6,7 +6,6 @@
 
 .mover {
   will-change: transform;
-  transform: translate3d(0,0,0);
   position: fixed;
   z-index: -1;
 }

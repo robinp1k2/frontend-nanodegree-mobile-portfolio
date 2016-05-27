@@ -17,7 +17,18 @@ Cameron Pittman, Udacity Course Developer
 cameron *at* udacity *dot* com
 */
 // As you may have realized, this website randomly generates pizzas.
-var currentScrollY = 0;
+
+//declare globals
+var items;
+var numMovingPizzas = 0;
+var basicLeftFactor;
+var sliderLabel = document.getElementById("pizzaSize");
+var pizzaElements;
+
+// more globals:  help from www.html5rocks.com - Leaner, meaner, faster animations...
+var latestKnownScrollY = 0;
+var ticking;
+
 
 // Here are arrays of all possible pizza ingredients.
 var pizzaIngredients = {};
@@ -346,52 +357,51 @@ var pizzaElementGenerator = function (pid) {
     return pizzaContainer;
 };
 
+// Changes the value for the size of the pizza above the slider
+function changeSliderLabel(newSize) {
+    switch (newSize) {
+    case "1":
+        sliderLabel.innerHTML = "Small";
+        return;
+    case "2":
+        sliderLabel.innerHTML = "Medium";
+        return;
+    case "3":
+        sliderLabel.innerHTML = "Large";
+        return;
+    default:
+        console.log("bug in changeSliderLabel");
+    }
+}
+
+// Iterates through pizza elements on the page and changes their widths
+function changePizzaSizes(newSize) {
+    var newWidth;
+    var i;
+    switch (newSize) {
+    case "1":
+        newWidth = "292px";// was 25
+        break;
+    case "2":
+        newWidth = "389px"; // was 33.3
+        break;
+    case "3":
+        newWidth = "585px"; // was 50
+        break;
+    default:
+        newWidth = "389px"; // was 33.3
+        console.log("bug in sizeSwitcher");
+    }
+    for (i = 0; i < pizzaElements.length; i = i + 1) {
+        pizzaElements[i].style.width = newWidth;
+    }
+}
 // resizePizzas(size) is called when the slider in the "Our Pizzas" section of the website moves.
 var resizePizzas = function (size) {
     //perf start
     window.performance.mark("mark_start_resize");   // User Timing API function
 
-    // Changes the value for the size of the pizza above the slider
-    function changeSliderLabel(size) {
-        switch (size) {
-        case "1":
-            document.querySelector("#pizzaSize").innerHTML = "Small";
-            return;
-        case "2":
-            document.querySelector("#pizzaSize").innerHTML = "Medium";
-            return;
-        case "3":
-            document.querySelector("#pizzaSize").innerHTML = "Large";
-            return;
-        default:
-            console.log("bug in changeSliderLabel");
-        }
-    }
     changeSliderLabel(size);
-
-    // Iterates through pizza elements on the page and changes their widths
-    function changePizzaSizes(size) {
-        var newWidth;
-        var i;
-        switch (size) {
-        case "1":
-            newWidth = "292px";//25
-            break;
-        case "2":
-            newWidth = "389px"; //33.3
-            break;
-        case "3":
-            newWidth = "585px"; //50
-            break;
-        default:
-            newWidth = "389px"; //33.3
-            console.log("bug in sizeSwitcher");
-        }
-        var pizzaElements = document.querySelectorAll(".randomPizzaContainer");
-        for (i = 0; i < pizzaElements.length; i = i + 1) {
-            pizzaElements[i].style.width = newWidth;
-        }
-    }
     changePizzaSizes(size);
 
     //perf end
@@ -401,10 +411,6 @@ var resizePizzas = function (size) {
     var timeToResize = window.performance.getEntriesByName("measure_pizza_resize");
     console.log("Time to resize pizzas: " + timeToResize[timeToResize.length - 1].duration + "ms");
 };
-
-// Iterator for number of times the pizzas in the background have scrolled.
-// Used by updatePositions() to decide when to log the average time per frame
-var frame = 0;
 
 // Logs the average amount of time per 10 frames needed to move the sliding background pizzas on scroll.
 // times is the array of User Timing measurements from updatePositions()
@@ -417,6 +423,9 @@ function logAverageFrame(times) {
     }
     console.log("Average time to generate last 10 frames: " + sum / 10 + "ms");
 }
+// Iterator for number of times the pizzas in the background have scrolled.
+// Used by updatePositions() to decide when to log the average time per frame //doesn't need to be global
+var frame = 0;
 
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
@@ -433,16 +442,27 @@ function updatePositions() {
         items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
     }
     */
-    var items = document.getElementsByClassName('mover');
+
+    var currentScrollY = latestKnownScrollY;
     var i;
-    var numItems = items.length;
     var phase;
     var phaseFactor = currentScrollY / 1250;
-    for (i = 0; i < numItems; i = i + 1) {
+    for (i = 0; i < numMovingPizzas; i = i + 1) {
         phase = Math.sin(phaseFactor + (i % 5));
-        items[i].style.transform = "translate3d(" + (items[i].basicLeft + (100 * phase) - 600) + "px, 0px, 0px)"; 
+
+        //for "position: absolute" instead of "fixed" in css - not working
+        //items[i].style.transform = "translate3d(" + (items[i].basicLeft + (100 * phase) - 600) + "px, " + currentScrollY + "0px, 0px)";
+
+        //for "will-change: transform" and "transform: translate3d(0,0,0)" in css - tried this...
+        //items[i].style.transform = "translate3d(" + (basicLeftFactor[i % 6] + (100 * phase) - 600) + "px, 0px, 0px)";
+        //console.log("items[i].basicLeft: " + i + ", " + items[i].basicLeft + ", basicLeftFactor: " + basicLeftFactor[i % 6]);
+
+      	//for "will-change: transform" in css
+        items[i].style.transform = "translateX(" + (basicLeftFactor[i % 6] + (100 * phase) - 600) + "px)";
     }
- 
+    //Allow another animation frame to start
+    ticking = false;
+
     //perf end
     // User Timing API to the rescue again. Seriously, it's worth learning.
     // Super easy to create custom metrics.
@@ -454,69 +474,84 @@ function updatePositions() {
     }
 }
 
-var makePizzaShop = function () {
+// Called whenever scroll event occurs
+function whenScroll() {
+    // only do something if not currently running requestAnimationFrame
+    if (!ticking) {
+        latestKnownScrollY = window.scrollY;
+        ticking = true;
+        requestAnimationFrame(updatePositions);
+    }
+}
+
+//Initialize web page with all generated elements
+function makePizzaShop() {
+    console.log("makePizzaShop");
     //Set the number of custom pizzas on the menu.
     var numCustomPizzas = 28;
     var iPizza;
-    var pizzasDiv = "";
 
-    //perf start
+    //perf start - measure_pizza_generation
     window.performance.mark("mark_start_generating"); // collect timing data
 
+    var pizzasDiv = document.getElementById("randomPizzas");
     // This for-loop actually creates and appends all of the pizzas when the page loads
     for (iPizza = 2; iPizza < numCustomPizzas; iPizza = iPizza + 1) {
-        pizzasDiv = document.getElementById("randomPizzas");
         pizzasDiv.appendChild(pizzaElementGenerator(iPizza));
     }
+    pizzaElements = document.getElementsByClassName('randomPizzaContainer');
 
-    //perf end
+    //perf end - measure_pizza_generation
     // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
     window.performance.mark("mark_end_generating");
     window.performance.measure("measure_pizza_generation", "mark_start_generating", "mark_end_generating");
     var timeToGenerate = window.performance.getEntriesByName("measure_pizza_generation");
     console.log("Time to generate pizzas on load: " + timeToGenerate[0].duration + "ms");
 
+    //perf start - measure_moving_pizza_generation
+    window.performance.mark("mark_start_generating"); // collect timing data
+
     // Generates the sliding pizzas when the page loads.
-    var numMovingPizzas = 26;
-    var cols = 8;
+    //numMovingPizzas = 200;
+    numMovingPizzas = 18;
+    //var cols = 8;
+    var cols = 6;
     var s = 256;
+    // for pizza movers translate calculation: need to have an array entry corresponding to number of columns
+    // that is a multiple of "s":
+    basicLeftFactor = [0, 256, 512, 768, 1024, 1280];
     var mID;
     var elem;
-    for (mID = 0; mID < numMovingPizzas; mID = mID + 1) {
+    var movingPizzas1Div = document.getElementById("movingPizzas1");
+    for (mID = 0; mID <= numMovingPizzas; mID = mID + 1) {
         elem = document.createElement('img');
         elem.className = 'mover';
         elem.src = "images/pizza_73.jpg"; //new image of the right size
         elem.basicLeft = (mID % cols) * s;
         elem.style.top = (Math.floor(mID / cols) * s) + 'px';
-        document.querySelector("#movingPizzas1").appendChild(elem);
+        movingPizzas1Div.appendChild(elem);
+        //console.log("moverxy: " + elem.basicLeft + ", " + elem.style.top);
     }
-    currentScrollY = window.scrollY;
-    updatePositions();
-    
-    // runs updatePositions on scroll
-    //window.addEventListener('scroll', updatePositions);
+    //Get a handle to the movers after they are created!
+    items = document.getElementsByClassName('mover');
+    //console.log(items);
 
-    // runs updatePositions on scroll - add requestAnimationFrame...was getting multiple calls to updatePositions...
-    window.addEventListener('scroll', function() {
-        window.requestAnimationFrame(updatePositions);
-        currentScrollY = window.scrollY;
-    });
-};
+    //perf end - measure_moving_pizza_generation
+    // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
+    window.performance.mark("mark_end_generating");
+    window.performance.measure("measure_moving_pizza_generation", "mark_start_generating", "mark_end_generating");
+    timeToGenerate = window.performance.getEntriesByName("measure_moving_pizza_generation");
+    console.log("Time to generate moving pizzas on load: " + timeToGenerate[0].duration + "ms");
 
-function onLoad(f) {
-    //If document is already loaded
-    if (onLoad.loaded) {
-        //queue f to be run as soon as possible
-        window.setTimeout(f, 0);
-    } else if (window.addEventListener) {
-        //standard event registration method
-        window.addEventListener("load", f, false);
-    } else if (window.attachEvent) {
-        window.attachEvent("onload", f);
-    }
+    //set initial scroll position and update moving pizzas
+    window.requestAnimationFrame(updatePositions);
+
+    //set scroll event listener
+    window.addEventListener('scroll', whenScroll, false);
+    //allow whenScroll function to run.
+    ticking = false;
 }
-onLoad.loaded = false;
-onLoad(makePizzaShop());
-onLoad.loaded = true;
 
+// Make all the custom elements once the page is loaded.
+window.onload = makePizzaShop();
 
