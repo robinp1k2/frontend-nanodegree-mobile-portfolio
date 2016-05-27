@@ -553,5 +553,19 @@ function makePizzaShop() {
 }
 
 // Make all the custom elements once the page is loaded.
-window.onload = makePizzaShop();
-
+//window.onload = makePizzaShop();
+function onLoad(f) {
+    //If document is already loaded
+    if (onLoad.loaded) {
+        //queue f to be run as soon as possible
+        window.setTimeout(f, 0);
+    } else if (window.addEventListener) {
+        //standard event registration method
+        window.addEventListener("load", f, false);
+    } else if (window.attachEvent) {
+        window.attachEvent("onload", f);
+    }
+}
+onLoad.loaded = false;
+onLoad(makePizzaShop());
+onLoad.loaded = true;
