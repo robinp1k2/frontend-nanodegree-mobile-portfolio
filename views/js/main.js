@@ -20,7 +20,7 @@ cameron *at* udacity *dot* com
 //declare globals
 var items;
 var numMovingPizzas = 0;
-var basicLeftFactor;
+var basicLeftFactor = [];
 var sliderLabel = document.getElementById("pizzaSize");
 var pizzaElements;
 
@@ -444,21 +444,44 @@ function updatePositions() {
     //perf start
     frame = frame + 1;
     window.performance.mark("mark_start_frame");
-    /* orig
+    /* original code
     var items = document.querySelectorAll('.mover');
     for (var i = 0; i < items.length; i++) {
         var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
         items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
     }
     */
-
+    
+    /*  coach suggestion:
+    var phase = []; 
+    for (var i = 0; i < 5; i++) {
+        phase.push(Math.sin(scrollTop / 1250 + i) * 100);
+    }
+    for (var i = 0, max = items.length; i < max; i++) {
+        items[i].style.left = items[i].basicLeft + phase[i%5] + 'px';
+    }
+    */
+    
+    /* my original:
     var currentScrollY = latestKnownScrollY;
-    var i;
     var phase;
     var phaseFactor = currentScrollY / 1250;
+    var i;
     for (i = 0; i < numMovingPizzas; i = i + 1) {
         phase = Math.sin(phaseFactor + (i % 5));
+    */
 
+    var currentScrollY = latestKnownScrollY;
+    var phase = [];
+    var i;
+
+    // Set up array of pre-calculated values so not doing Math in loop where style is being set.
+    for (i = 0; i < 5; i = i + 1) {
+        phase.push(basicLeftFactor[i % 5] + (100 * (Math.sin(currentScrollY / 1250 + (i % 5)))) - 600);
+    }
+    
+    // numMovingPizzas is a global variable that is set in makePizzaShop.
+    for (i = 0; i < numMovingPizzas; i = i + 1) {
         //for "position: absolute" instead of "fixed" in css - not working
         //items[i].style.transform = "translate3d(" + (items[i].basicLeft + (100 * phase) - 600) + "px, " + currentScrollY + "0px, 0px)";
 
@@ -467,7 +490,11 @@ function updatePositions() {
         //console.log("items[i].basicLeft: " + i + ", " + items[i].basicLeft + ", basicLeftFactor: " + basicLeftFactor[i % 6]);
 
       	//for "will-change: transform" in css
-        items[i].style.transform = "translateX(" + (basicLeftFactor[i % 6] + (100 * phase) - 600) + "px)";
+        //   basicLeftFactor is a global array set in makePizzaShop.
+        //   Take the Math call out of the loop by creating a phase array.
+        //   my original: 
+        //   items[i].style.transform = "translateX(" + (basicLeftFactor[i % 6] + (100 * phase) - 600) + "px)";
+        items[i].style.transform = "translateX(" + phase[i % 5] + "px)";
     }
     //Allow another animation frame to start
     ticking = false;
@@ -496,8 +523,8 @@ function whenScroll() {
 //Initialize web page with all generated elements
 function makePizzaShop() {
     console.log("makePizzaShop");
-    //Set the number of custom pizzas on the menu.
-    var numCustomPizzas = 28;
+    //Set the number of custom pizzas on the menu.  (keeping original value of 100)
+    var numCustomPizzas = 100;
     var iPizza;
 
     //perf start - measure_pizza_generation
@@ -508,6 +535,7 @@ function makePizzaShop() {
     for (iPizza = 2; iPizza < numCustomPizzas; iPizza = iPizza + 1) {
         pizzasDiv.appendChild(pizzaElementGenerator(iPizza));
     }
+    // Store the pizza menu items in a global variable so don't have to query for this later
     pizzaElements = document.getElementsByClassName('randomPizzaContainer');
 
     //perf end - measure_pizza_generation
@@ -521,22 +549,28 @@ function makePizzaShop() {
     window.performance.mark("mark_start_generating"); // collect timing data
 
     // Generates the sliding pizzas when the page loads.
-    numMovingPizzas = 18; //loop to create moving pizzas was set to 200!  Only need 18 for the page.
-    //var cols = 8;
-    var cols = 6;
+    var cols = 8;
     var s = 256;
-    // for pizza movers translate calculation: need to have an array entry corresponding to number of columns
-    // that is a multiple of "s":
-    basicLeftFactor = [0, 256, 512, 768, 1024, 1280];
-    var mID;
-    var elem;
+    // Calculated number of moving pizzas needed for display on the page (coach's tip!)
+    numMovingPizzas = (Math.floor(window.innerHeight / s) + 1) * cols;
+    //console.log("window.innerHeight: " + window.innerHeight + ", numMovingPizzas: " + numMovingPizzas);
+    
+    // Taking Math.floor calculation out of theloop.
+    // Created an array entry corresponding to the number of columns that is a multiple of "s":
+    //basicLeftFactor = [0, 256, 512, 768, 1024, 1280, 2560, 5120];
+    var i;
+    for (i = 0; i < cols; i = i + 1) {
+        basicLeftFactor.push(s * i);
+    }
+
     var movingPizzas1Div = document.getElementById("movingPizzas1");
-    for (mID = 0; mID <= numMovingPizzas; mID = mID + 1) {
-        elem = document.createElement('img');
+    for (i = 0; i < numMovingPizzas; i = i + 1) {
+        var elem = document.createElement('img');
         elem.className = 'mover';
         elem.src = "images/pizza_73.jpg"; //new image of the right size
-        elem.basicLeft = (mID % cols) * s;
-        elem.style.top = (Math.floor(mID / cols) * s) + 'px';
+        //elem.basicLeft = (i % cols) * s;
+        elem.basicLeft = basicLeftFactor[i % cols];
+        elem.style.top = (Math.floor(i / cols) * s) + 'px';
         movingPizzas1Div.appendChild(elem);
         //console.log("moverxy: " + elem.basicLeft + ", " + elem.style.top);
     }
