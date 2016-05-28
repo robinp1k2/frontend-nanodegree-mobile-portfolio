@@ -1,11 +1,8 @@
 ## Website Performance Optimization portfolio project
-- Github project: 
--- https://github.com/robinp1k2/frontend-nanodegree-mobile-portfolio
-- Github Pages website: 
--- http://robinp1k2.github.io/frontend-nanodegree-mobile-portfolio/views/pizza.html 
-- PageSpeed Insights - desktop and mobile:
--- https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Frobinp1k2.github.io%2Ffrontend-nanodegree-mobile-portfolio%2F&tab=desktop 
--- https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Frobinp1k2.github.io%2Ffrontend-nanodegree-mobile-portfolio%2F&tab=mobile
+- Github project: https://github.com/robinp1k2/frontend-nanodegree-mobile-portfolio
+- Github Pages website: http://robinp1k2.github.io/frontend-nanodegree-mobile-portfolio/views/pizza.html 
+- PageSpeed Insights desktop: https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Frobinp1k2.github.io%2Ffrontend-nanodegree-mobile-portfolio%2F&tab=desktop 
+- PageSpeed Insights mobile: desktop:https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Frobinp1k2.github.io%2Ffrontend-nanodegree-mobile-portfolio%2F&tab=mobile
 
 ### How to install and build
 1. Clone the repository from github
