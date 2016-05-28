@@ -16,7 +16,6 @@ Creator:
 Cameron Pittman, Udacity Course Developer
 cameron *at* udacity *dot* com
 */
-// As you may have realized, this website randomly generates pizzas.
 
 //declare globals
 var items;
@@ -30,6 +29,7 @@ var latestKnownScrollY = 0;
 var ticking;
 
 
+// As you may have realized, this website randomly generates pizzas.
 // Here are arrays of all possible pizza ingredients.
 var pizzaIngredients = {};
 pizzaIngredients.meats = [
@@ -154,8 +154,8 @@ pizzaIngredients.crusts = [
     "Flatbread Crust",
     "Stuffed Crust"
 ];
-// Name generator pulled from http://saturdaykid.com/usernames/generator.html
 
+// Name generator pulled from http://saturdaykid.com/usernames/generator.html
 // Capitalizes first letter of each word
 var capitalizer = function (s) {
     s = s[0].toUpperCase() + s.slice(1);
@@ -163,6 +163,7 @@ var capitalizer = function (s) {
 };
 
 // Pulls adjective out of array using random number sent from generator
+//    per jslint.org "Don't declare variables in a switch."
 function getAdj(x) {
     var dark = ["dark", "morbid", "scary", "spooky", "gothic", "deviant", "creepy", "sadistic", "black", "dangerous", "dejected", "haunted", "morose", "tragic", "shattered", "broken", "sad", "melancholy", "somber", "dark", "gloomy", "homicidal", "murderous", "shady", "misty", "dusky", "ghostly", "shadowy", "demented", "cursed", "insane", "possessed", "grotesque", "obsessed"];
     var colors = ["blue", "green", "purple", "grey", "scarlet", "NeonGreen", "NeonBlue", "NeonPink", "HotPink", "pink", "black", "red", "maroon", "silver", "golden", "yellow", "orange", "mustard", "plum", "violet", "cerulean", "brown", "lavender", "violet", "magenta", "chestnut", "rosy", "copper", "crimson", "teal", "indigo", "navy", "azure", "periwinkle", "brassy", "verdigris", "veridian", "tan", "raspberry", "beige", "sandy", "ElectricBlue", "white", "champagne", "coral", "cyan"];
@@ -173,7 +174,7 @@ function getAdj(x) {
     var insulting = ["stupid", "idiotic", "fat", "ugly", "hideous", "grotesque", "dull", "dumb", "lazy", "sluggish", "brainless", "slow", "gullible", "obtuse", "dense", "dim", "dazed", "ridiculous", "witless", "daft", "crazy", "vapid", "inane", "mundane", "hollow", "vacuous", "boring", "insipid", "tedious", "monotonous", "weird", "bizarre", "backward", "moronic", "ignorant", "scatterbrained", "forgetful", "careless", "lethargic", "insolent", "indolent", "loitering", "gross", "disgusting", "bland", "horrid", "unseemly", "revolting", "homely", "deformed", "disfigured", "offensive", "cowardly", "weak", "villainous", "fearful", "monstrous", "unattractive", "unpleasant", "nasty", "beastly", "snide", "horrible", "syncophantic", "unhelpful", "bootlicking"];
     var praise = ["beautiful", "intelligent", "smart", "genius", "ingenious", "gorgeous", "pretty", "witty", "angelic", "handsome", "graceful", "talented", "exquisite", "enchanting", "fascinating", "interesting", "divine", "alluring", "ravishing", "wonderful", "magnificient", "marvelous", "dazzling", "cute", "charming", "attractive", "nifty", "delightful", "superior", "amiable", "gentle", "heroic", "courageous", "valiant", "brave", "noble", "daring", "fearless", "gallant", "adventurous", "cool", "enthusiastic", "fierce", "awesome", "radical", "tubular", "fearsome", "majestic", "grand", "stunning"];
     var scientific = ["scientific", "technical", "digital", "programming", "calculating", "formulating", "cyberpunk", "mechanical", "technological", "innovative", "brainy", "chemical", "quantum", "astro", "space", "theoretical", "atomic", "electronic", "gaseous", "investigative", "solar", "extinct", "galactic"];
-    var scientific_default = ["scientific", "technical", "digital", "programming", "calculating", "formulating", "cyberpunk", "mechanical", "technological", "innovative", "brainy", "chemical", "quantum", "astro", "space", "theoretical", "atomic", "electronic", "gaseous", "investigative", "solar", "extinct", "galactic"];
+    var scientific_default = scientific;
     switch (x) {
     case "dark":
         return dark;
@@ -199,6 +200,7 @@ function getAdj(x) {
 }
 
 // Pulls noun out of array using random number sent from generator
+//    per jslint.org "Don't declare variables in a switch."
 function getNoun(y) {
     var animals = ["flamingo", "hedgehog", "owl", "elephant", "pussycat", "alligator", "dachsund", "poodle", "beagle", "crocodile", "kangaroo", "wallaby", "woodpecker", "eagle", "falcon", "canary", "parrot", "parakeet", "hamster", "gerbil", "squirrel", "rat", "dove", "toucan", "raccoon", "vulture", "peacock", "goldfish", "rook", "koala", "skunk", "goat", "rooster", "fox", "porcupine", "llama", "grasshopper", "gorilla", "monkey", "seahorse", "wombat", "wolf", "giraffe", "badger", "lion", "mouse", "beetle", "cricket", "nightingale", "hawk", "trout", "squid", "octopus", "sloth", "snail", "locust", "baboon", "lemur", "meerkat", "oyster", "frog", "toad", "jellyfish", "butterfly", "caterpillar", "tiger", "hyena", "zebra", "snail", "pig", "weasel", "donkey", "penguin", "crane", "buzzard", "vulture", "rhino", "hippopotamus", "dolphin", "sparrow", "beaver", "moose", "minnow", "otter", "bat", "mongoose", "swan", "firefly", "platypus"];
     var professions = ["doctor", "lawyer", "ninja", "writer", "samurai", "surgeon", "clerk", "artist", "actor", "engineer", "mechanic", "comedian", "fireman", "nurse", "RockStar", "musician", "carpenter", "plumber", "cashier", "electrician", "waiter", "president", "governor", "senator", "scientist", "programmer", "singer", "dancer", "director", "mayor", "merchant", "detective", "investigator", "navigator", "pilot", "priest", "cowboy", "stagehand", "soldier", "ambassador", "pirate", "miner", "police"];
@@ -210,7 +212,7 @@ function getNoun(y) {
     var jewelry = ["earrings", "ring", "necklace", "pendant", "choker", "brooch", "bracelet", "cameo", "charm", "bauble", "trinket", "jewelry", "anklet", "bangle", "locket", "finery", "crown", "tiara", "blingBling", "chain", "rosary", "jewel", "gemstone", "beads", "armband", "pin", "costume", "ornament", "treasure"];
     var places = ["swamp", "graveyard", "cemetery", "park", "building", "house", "river", "ocean", "sea", "field", "forest", "woods", "neighborhood", "city", "town", "suburb", "country", "meadow", "cliffs", "lake", "stream", "creek", "school", "college", "university", "library", "bakery", "shop", "store", "theater", "garden", "canyon", "highway", "restaurant", "cafe", "diner", "street", "road", "freeway", "alley"];
     var scifi = ["robot", "alien", "raygun", "spaceship", "UFO", "rocket", "phaser", "astronaut", "spaceman", "planet", "star", "galaxy", "computer", "future", "timeMachine", "wormHole", "timeTraveler", "scientist", "invention", "martian", "pluto", "jupiter", "saturn", "mars", "quasar", "blackHole", "warpDrive", "laser", "orbit", "gears", "molecule", "electron", "neutrino", "proton", "experiment", "photon", "apparatus", "universe", "gravity", "darkMatter", "constellation", "circuit", "asteroid"];
-    var scifi_default = ["robot", "alien", "raygun", "spaceship", "UFO", "rocket", "phaser", "astronaut", "spaceman", "planet", "star", "galaxy", "computer", "future", "timeMachine", "wormHole", "timeTraveler", "scientist", "invention", "martian", "pluto", "jupiter", "saturn", "mars", "quasar", "blackHole", "warpDrive", "laser", "orbit", "gears", "molecule", "electron", "neutrino", "proton", "experiment", "photon", "apparatus", "universe", "gravity", "darkMatter", "constellation", "circuit", "asteroid"];
+    var scifi_default = scifi;
     switch (y) {
     case "animals":
         return animals;
@@ -238,10 +240,12 @@ function getNoun(y) {
 }
 
 // types of adjectives for pizza titles
+//"noisy" was misspelled
 var adjCategory = ["dark", "color", "whimsical", "shiny", "noisy", "apocalyptic", "insulting", "praise", "scientific"];
 
 // types of nouns for pizza titles
-var nounCategory = ["animals", "everyday", "fantasy", "gross", "horror", "jewelry", "places", "scifi"];
+// Missing some of the nouns
+var nounCategory = ["animals", "profession", "everyday", "fantasy", "music", "gross", "horror", "jewelry", "places", "scifi"];
 
 // Generates random numbers for getAdj and getNoun functions and returns a new pizza name
 function generator(aCat, nCat) {
@@ -292,7 +296,7 @@ var ingredientItemizer = function (iStr) {
 
 // Returns a string with random pizza ingredients nested inside <li> tags
 var makeRandomPizza = function () {
-    var pizzaList = "";
+    var pizza = "";
     var numberOfMeats = Math.floor(Math.random() * 4);
     var numberOfNonMeats = Math.floor(Math.random() * 3);
     var numberOfCheeses = Math.floor(Math.random() * 2);
@@ -301,20 +305,20 @@ var makeRandomPizza = function () {
     var k;
 
     for (i = 0; i < numberOfMeats; i = i + 1) {
-        pizzaList = pizzaList + ingredientItemizer(selectRandomMeat());
+        pizza = pizza + ingredientItemizer(selectRandomMeat());
     }
 
     for (j = 0; j < numberOfNonMeats; j = j + 1) {
-        pizzaList = pizzaList + ingredientItemizer(selectRandomNonMeat());
+        pizza = pizza + ingredientItemizer(selectRandomNonMeat());
     }
 
     for (k = 0; k < numberOfCheeses; k = k + 1) {
-        pizzaList = pizzaList + ingredientItemizer(selectRandomCheese());
+        pizza = pizza + ingredientItemizer(selectRandomCheese());
     }
-    pizzaList = pizzaList + ingredientItemizer(selectRandomSauce());
-    pizzaList = pizzaList + ingredientItemizer(selectRandomCrust());
+    pizza = pizza + ingredientItemizer(selectRandomSauce());
+    pizza = pizza + ingredientItemizer(selectRandomCrust());
 
-    return pizzaList;
+    return pizza;
 };
 
 // returns a DOM element for each pizza
@@ -358,6 +362,8 @@ var pizzaElementGenerator = function (pid) {
 };
 
 // Changes the value for the size of the pizza above the slider
+//  Moved this function outside of resizePizzas
+//  Instead of using "querySelector" here a global "sliderLabel" is defined at the top of the code
 function changeSliderLabel(newSize) {
     switch (newSize) {
     case "1":
@@ -375,12 +381,14 @@ function changeSliderLabel(newSize) {
 }
 
 // Iterates through pizza elements on the page and changes their widths
+//   Moved this function outside of resizePizzas.
+//   Removed the functions "determineDx" and "sizeSwitcher" and instead set to use fixed pixel sizes
 function changePizzaSizes(newSize) {
     var newWidth;
     var i;
     switch (newSize) {
     case "1":
-        newWidth = "292px";// was 25
+        newWidth = "292px"; // was 25
         break;
     case "2":
         newWidth = "389px"; // was 33.3
@@ -412,6 +420,10 @@ var resizePizzas = function (size) {
     console.log("Time to resize pizzas: " + timeToResize[timeToResize.length - 1].duration + "ms");
 };
 
+// Iterator for number of times the pizzas in the background have scrolled.
+// Used by updatePositions() to decide when to log the average time per frame //doesn't need to be global
+var frame = 0;
+
 // Logs the average amount of time per 10 frames needed to move the sliding background pizzas on scroll.
 // times is the array of User Timing measurements from updatePositions()
 function logAverageFrame(times) {
@@ -423,9 +435,6 @@ function logAverageFrame(times) {
     }
     console.log("Average time to generate last 10 frames: " + sum / 10 + "ms");
 }
-// Iterator for number of times the pizzas in the background have scrolled.
-// Used by updatePositions() to decide when to log the average time per frame //doesn't need to be global
-var frame = 0;
 
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
@@ -474,7 +483,7 @@ function updatePositions() {
     }
 }
 
-// Called whenever scroll event occurs
+// runs updatePositions on scroll
 function whenScroll() {
     // only do something if not currently running requestAnimationFrame
     if (!ticking) {
@@ -512,8 +521,7 @@ function makePizzaShop() {
     window.performance.mark("mark_start_generating"); // collect timing data
 
     // Generates the sliding pizzas when the page loads.
-    //numMovingPizzas = 200;
-    numMovingPizzas = 18;
+    numMovingPizzas = 18; //loop to create moving pizzas was set to 200!  Only need 18 for the page.
     //var cols = 8;
     var cols = 6;
     var s = 256;
@@ -537,7 +545,6 @@ function makePizzaShop() {
     //console.log(items);
 
     //perf end - measure_moving_pizza_generation
-    // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
     window.performance.mark("mark_end_generating");
     window.performance.measure("measure_moving_pizza_generation", "mark_start_generating", "mark_end_generating");
     timeToGenerate = window.performance.getEntriesByName("measure_moving_pizza_generation");
@@ -552,20 +559,9 @@ function makePizzaShop() {
     ticking = false;
 }
 
-// Make all the custom elements once the page is loaded.
-//window.onload = makePizzaShop();
-function onLoad(f) {
-    //If document is already loaded
-    if (onLoad.loaded) {
-        //queue f to be run as soon as possible
-        window.setTimeout(f, 0);
-    } else if (window.addEventListener) {
-        //standard event registration method
-        window.addEventListener("load", f, false);
-    } else if (window.attachEvent) {
-        window.attachEvent("onload", f);
-    }
-}
-onLoad.loaded = false;
-onLoad(makePizzaShop());
-onLoad.loaded = true;
+// Generates the sliding pizzas when the page loads.
+//   Make all the custom elements once the page is loaded.
+//   I put it all into one function "makePizzaShop"
+document.addEventListener('DOMContentLoaded', function() {
+    makePizzaShop();
+});

@@ -1,5 +1,47 @@
 ## Website Performance Optimization portfolio project
+Github project: 
+    https://github.com/robinp1k2/frontend-nanodegree-mobile-portfolio
+Github Pages website: 
+    http://robinp1k2.github.io/frontend-nanodegree-mobile-portfolio/views/pizza.html 
+PageSpeed Insights - desktop and mobile:
+https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Frobinp1k2.github.io%2Ffrontend-nanodegree-mobile-portfolio%2F&tab=desktop 
+https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Frobinp1k2.github.io%2Ffrontend-nanodegree-mobile-portfolio%2F&tab=mobile
 
+### How to install and build
+1. Clone the repository from github
+2. Make edits to the website files and when finished run gulp to prep the files for production.  At the command line simply type "gulp".  This runs the gulpfile.js which takes care of all optimizing and moves updated files into the "dist" directory.  Note: Do not edit files in the "dist" folder.  That is where the compressed files are stored which are deployed to production.
+3. After running gulp the "dist" directory contains all optimized files ready for production depoloyment.
+
+### Image Optimizations
+- Copied images at remote URLS to local directory
+- Resized and adjusted quality of images to be size needed by web pages.  Made multiple sizes when needed.
+- Compressed all images
+
+### HTML Optimizations
+- Removed call to Google web fonts
+- Removed call to Google Analytics
+- Inlined styles needed above the fold.
+- Delayed load of css files (inlined above-the-fold)
+- Set the JavaScript script to load asynchronously.
+- Set “media” on the print style so loads asynchronously.
+
+### JavaScript:
+- Used jslint.org to standardize the code.
+- Pulled embedded functions out so they are not redefined each time calling function is run.
+- Modified code that resizes pizza using the switch to use three set pixel values instead of running functions and calculations.
+- Modified the code that moves the pizzas (“movers”) to reduce calculations by using preset multiplication factors.  
+- Reduced calls to render-blocking functions as much as possible to cut down on jank.
+- Used requestAnimationFrame to run the moving pizza animations and a trick from website html5rocks to save latestKnownScrollY so don’t have to calculate it during animation function as wells as halt animations when one is running (“ticking”).
+- Cut down on the number of moving pizzas from 200 to 18.
+- Utilized more efficient “getElementsByClassName instead of querySelectorAll.
+- Created onLoad function and initialization function (“makePizzaShop”) to better organize code.
+
+### CSS:
+Added “will-change” to css to encourage using composite images.  
+
+
+
+## Original instructions for project:
 Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
 
 To get started, check out the repository, inspect the code,
